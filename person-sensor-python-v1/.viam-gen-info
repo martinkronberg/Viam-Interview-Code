@@ -1,0 +1,13 @@
+{
+  "module_name": "person-sensor",
+  "namespace": "martin-namespace",
+  "language": "python",
+  "resource_type": "component",
+  "resource_subtype": "sensor",
+  "model_name": "person-sensor",
+  "enable_cloud_build": false,
+  "initialize_git": false,
+  "generator_version": "0.1.0",
+  "generated_on": "2025-04-28T19:27:55.899691662Z",
+  "module_readme_link": "README.md"
+}

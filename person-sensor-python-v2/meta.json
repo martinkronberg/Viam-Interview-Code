@@ -1,0 +1,18 @@
+{
+  "module_id": "martin-namespace:person-sensor-module",
+  "visibility": "public",
+  "url": "https://github.com/<your-org>/person-sensor-module",
+  "description": "Sensor that reports 1 when the vision-1 service sees a person, else 0.",
+  "models": [
+    {
+      "api": "rdk:component:sensor",
+      "model": "martin-namespace:person-sensor:person-sensor"
+    }
+  ],
+  "build": {
+    "build": "make module.tar.gz",
+    "path": "module.tar.gz",
+    "arch": ["linux/amd64"]
+  },
+  "entrypoint": "exec.sh"
+}

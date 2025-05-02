@@ -1,0 +1,28 @@
+{
+  "$schema": "https://dl.viam.dev/module.schema.json",
+  "module_id": "martin-namespace:person-sensor-go",
+  "visibility": "private",
+  "url": "",
+  "description": "Modular sensor component: person-sensor-go",
+  "models": [
+    {
+      "api": "rdk:component:sensor",
+      "model": "martin-namespace:person-sensor-go:person-sensor-go",
+      "short_description": "Provide a short (100 characters or less) description of this model here",
+      "markdown_link": "README.md#model-martin-namespaceperson-sensor-goperson-sensor-go"
+    }
+  ],
+  "applications": null,
+  "markdown_link": "README.md",
+  "entrypoint": "bin/person-sensor-go",
+  "first_run": "",
+  "build": {
+    "build": "make module.tar.gz",
+    "setup": "make setup",
+    "path": "bin/module.tar.gz",
+    "arch": [
+      "linux/amd64",
+      "linux/arm64"
+    ]
+  }
+}

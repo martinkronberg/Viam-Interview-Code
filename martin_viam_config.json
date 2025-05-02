@@ -1,0 +1,179 @@
+{
+  "components": [
+    {
+      "name": "camera-1",
+      "api": "rdk:component:camera",
+      "model": "rdk:builtin:webcam",
+      "attributes": {}
+    },
+    {
+      "name": "camera-filter",
+      "api": "rdk:component:camera",
+      "model": "viam:camera:filtered-camera",
+      "attributes": {
+        "camera": "camera-1",
+        "vision": "vision-1",
+        "window_seconds": 0,
+        "objects": {
+          "Person": 0.8
+        }
+      },
+      "service_configs": [
+        {
+          "type": "data_manager",
+          "attributes": {
+            "capture_methods": [
+              {
+                "method": "GetImages",
+                "capture_frequency_hz": 0.25,
+                "disabled": true,
+                "additional_params": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "sensor-1",
+      "api": "rdk:component:sensor",
+      "model": "martin-namespace:person-sensor:person-sensor",
+      "attributes": {
+        "vision_service": "vision-1",
+        "camera_name": "camera-1"
+      },
+      "depends_on": [
+        "vision-1"
+      ]
+    },
+    {
+      "name": "person-sensor-go-output",
+      "api": "rdk:component:sensor",
+      "model": "martin-namespace:person-sensor-go:person-sensor-go",
+      "attributes": {
+        "camera_name": "camera-1",
+        "vision_service": "vision-1"
+      }
+    },
+    {
+      "name": "sample-wifi-sensor",
+      "api": "rdk:component:sensor",
+      "model": "viam:wifi_sensor:linux",
+      "attributes": {}
+    },
+    {
+      "name": "pesron-sensor-from-sample-output",
+      "api": "rdk:component:sensor",
+      "model": "martin-namespace:person-sensor:person-sensor",
+      "attributes": {
+        "vision_service": "vision-1",
+        "camera_name": "camera-1"
+      }
+    }
+  ],
+  "services": [
+    {
+      "name": "data_manager-1",
+      "api": "rdk:service:data_manager",
+      "model": "rdk:builtin:builtin",
+      "attributes": {
+        "capture_dir": "/home/martin/viam/data",
+        "tags": [],
+        "additional_sync_paths": [],
+        "sync_interval_mins": 0.1
+      }
+    },
+    {
+      "name": "mlmodel-2",
+      "api": "rdk:service:mlmodel",
+      "model": "viam:mlmodel-tflite:tflite_cpu",
+      "attributes": {
+        "label_path": "${packages.ml_model.EfficientDet-COCO}/effdetlabels.txt",
+        "package_reference": "6efeb7e5-91aa-4187-8ed3-e84764726078/EfficientDet-COCO",
+        "model_path": "${packages.ml_model.EfficientDet-COCO}/effdet0 (3).tflite"
+      }
+    },
+    {
+      "name": "vision-1",
+      "api": "rdk:service:vision",
+      "model": "rdk:builtin:mlmodel",
+      "attributes": {
+        "mlmodel_name": "mlmodel-2",
+        "default_minimum_confidence": 0.5
+      }
+    },
+    {
+      "name": "chicken-model",
+      "api": "rdk:service:mlmodel",
+      "model": "viam:mlmodel-tflite:tflite_cpu",
+      "attributes": {
+        "label_path": "${packages.ml_model.chicken-tf-lite}/labels.txt",
+        "package_reference": "9a2ae43e-d141-4b77-b7a7-1914ad007a62/chicken-tf-lite",
+        "model_path": "${packages.ml_model.chicken-tf-lite}/chicken-tf-lite.tflite"
+      }
+    },
+    {
+      "name": "chicken-vision",
+      "api": "rdk:service:vision",
+      "model": "rdk:builtin:mlmodel",
+      "attributes": {
+        "mlmodel_name": "chicken-model",
+        "default_minimum_confidence": 0.5
+      }
+    }
+  ],
+  "modules": [
+    {
+      "type": "registry",
+      "name": "viam_tflite_cpu",
+      "module_id": "viam:tflite_cpu",
+      "version": "0.0.5"
+    },
+    {
+      "type": "registry",
+      "name": "viam_filtered-camera",
+      "module_id": "viam:filtered-camera",
+      "version": "0.1.3"
+    },
+    {
+      "type": "local",
+      "name": "person-sensor",
+      "executable_path": "/home/martin/viam/person-sensor/run.sh"
+    },
+    {
+      "type": "local",
+      "name": "person-sensor-go",
+      "executable_path": "/home/martin/viam/person-sensor-go/bin/person-sensor-go"
+    },
+    {
+      "type": "local",
+      "name": "sample-module-wifi",
+      "executable_path": "/home/martin/viam/python-example-module-main/exec.sh"
+    },
+    {
+      "type": "local",
+      "name": "person-sensor-from-sample",
+      "executable_path": "/home/martin/viam/person-sensor-from-sample/exec.sh"
+    }
+  ],
+  "packages": [
+    {
+      "name": "TF2-EfficientDetD0-COCO",
+      "package": "e76d1b3b-0468-4efd-bb7f-fb1d2b352fcb/TF2-EfficientDetD0-COCO",
+      "type": "ml_model",
+      "version": "latest"
+    },
+    {
+      "name": "EfficientDet-COCO",
+      "package": "6efeb7e5-91aa-4187-8ed3-e84764726078/EfficientDet-COCO",
+      "type": "ml_model",
+      "version": "latest"
+    },
+    {
+      "name": "chicken-tf-lite",
+      "package": "9a2ae43e-d141-4b77-b7a7-1914ad007a62/chicken-tf-lite",
+      "type": "ml_model",
+      "version": "latest"
+    }
+  ]
+}
